@@ -70,11 +70,9 @@ class Trainer:
             view_id = data['novel_view']['view_id'][0,0].item()
             s_name = data['novel_view']['sample_name']
 
-            ply_path = os.path.join(self.cfg.record.show_path, f"{s_name[0]}_geometry.ply")
-
             with torch.no_grad():
                 data, _, _ = self.model(data, is_train=False)
-                data = pts2render(data, bg_color=self.cfg.dataset.bg_color, save_ply_path=ply_path)
+                data = pts2render(data, bg_color=self.cfg.dataset.bg_color)
 
                 tmp_novel = data['novel_view']['img_pred'][0].detach()
                 tmp_novel *= 255
@@ -149,7 +147,7 @@ if __name__ == '__main__':
             cfg.record.show_path = "experiments/%s/show_%s" % (cfg.exp_name, seq_name)
             cfg.seq_name = seq_name 
             cfg.dataset.val_novel_id = [views_n] 
-            cfg.restore_ckpt = '/home/etri/GPS_plus/gps_plus_final.pth' # TODO
+            cfg.restore_ckpt = 'PATH/TO/gps_plus_latest.pth' # TODO
 
             cfg.freeze()
             print(cfg.restore_ckpt)
