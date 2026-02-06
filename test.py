@@ -69,10 +69,11 @@ class Trainer:
 
             view_id = data['novel_view']['view_id'][0,0].item()
             s_name = data['novel_view']['sample_name']
+            ply_path = os.path.join(self.cfg.record.show_path, f"{s_name[0]}_geometry.ply")
 
             with torch.no_grad():
                 data, _, _ = self.model(data, is_train=False)
-                data = pts2render(data, bg_color=self.cfg.dataset.bg_color)
+                data = pts2render(data, bg_color=self.cfg.dataset.bg_color, save_ply_path=ply_path)
 
                 tmp_novel = data['novel_view']['img_pred'][0].detach()
                 tmp_novel *= 255
